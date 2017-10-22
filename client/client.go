@@ -5,16 +5,17 @@ import (
 	"log"
 	"net/rpc"
 	"time"
+	"flag"
 
 	"github.com/killxin/timesync/proto"
 )
 
-var serverIP = "localhost"
-var serverPort = ":9527"
 var pwd = "qscvgyuk./'][;.,kuygvcdw"
 
 func main() {
-	client, err := rpc.DialHTTP("tcp", serverIP+serverPort)
+	serverIP := flag.String("remote","localhost:9527","rpc server ip:port")
+	flag.Parse()
+	client, err := rpc.DialHTTP("tcp", *serverIP)
 	if err != nil {
 		log.Fatal("dialing", err)
 	}

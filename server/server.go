@@ -9,11 +9,11 @@ import (
 	"net/rpc"
 	"strings"
 	"time"
+	"flag"
 
 	"github.com/killxin/timesync/proto"
 )
 
-var serverPort = ":9527"
 var pwd = "qscvgyuk./'][;.,kuygvcdw"
 
 // ClockImpl implements Clock Interface
@@ -31,11 +31,13 @@ func (t *ClockImpl) Sync(args *proto.Args, reply *proto.Reply) error {
 }
 
 func main() {
+	serverPort := flag.String("port", ":9527", "http listen port")
+	flag.Parse()
 	var clock proto.Clock
 	clock = new(ClockImpl)
 	rpc.RegisterName("Clock", clock)
 	rpc.HandleHTTP()
-	l, e := net.Listen("tcp", serverPort)
+	l, e := net.Listen("tcp", *serverPort)
 	if e != nil {
 		log.Fatal("listen error:", e)
 	}
